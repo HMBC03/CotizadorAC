@@ -1,15 +1,28 @@
+using CotizadorAC.Data;
+using CotizadorAC.Services;
+using Microsoft.EntityFrameworkCore;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+
+// Configurar DbContext con MySQL (Pomelo)
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+builder.Services.AddScoped<CotizadorService>();
+
+// Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddControllers(); 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -18,8 +31,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
-app.MapControllers();
+// app.UseAuthorization(); // Descomenta si usas auth
+ app.MapControllers();   // Descomenta si usas controladores
 
 app.Run();

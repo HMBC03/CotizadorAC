@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string Nombre { get; set; }
         public string TipoSeguro { get; set; }
-        public float ValorAsegurado { get; set; }
+        public decimal ValorAsegurado { get; set; }
         public int Edad { get; set; }
         public string Ciudad { get; set; }
         public decimal Prima { get; set; }
